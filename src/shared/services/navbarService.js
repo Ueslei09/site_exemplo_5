@@ -2,14 +2,15 @@
 export const navbarService = {
   getNavbarData() {
     return {
-      brandName: "ROCK ROLL",
+      brandName: "Fashion",
       showLogoImage: false,
-      logoImage: "/assets/logo.svg", // Caminho para sua imagem de logo (em public/ ou assets/)
-      logoAlt: "Rock Roll Logo",
-      contactText: "Contact Us",
+      logoImage: "/assets/logo.svg",
+      logoAlt: "Logo",
+      contactText: "Contact",
       contactUrl: "/contact",
       searchLabel: "Search",
       menuLabel: "Menu",
+      // Links do menu principal de navegação lateral (Hambúrguer)
       menuLinks: [
         { name: "Gifts", url: "/gifts" },
         { name: "Handbags", url: "/handbags" },
@@ -22,6 +23,16 @@ export const navbarService = {
         { name: "Fragrances and Makeup", url: "/fragrances" },
         { name: "Décor & Lifestyle", url: "/decor" },
         { name: "Gucci Services", url: "/services" }
+      ],
+      // Opções do menu de Utilizador/Conta com os respetivos Bootstrap Icons
+      accountLinks: [
+        { name: "Entrar", url: "/login", icon: "bi-box-arrow-in-right" },
+        { name: "As minhas ordens", url: "/orders", icon: "bi-bag-check" },
+        { name: "Configurações da minha conta", url: "/account-settings", icon: "bi-gear" },
+        { name: "O meu livro de endereços", url: "/addresses", icon: "bi-geo-alt" },
+        { name: "A minha carteira", url: "/wallet", icon: "bi-wallet2" },
+        { name: "Favoritos", url: "/favorites", icon: "bi-heart" },
+        { name: "Os meus compromissos", url: "/appointments", icon: "bi-calendar-check" }
       ],
       contactInfo: {
         title: "CONTACT US",

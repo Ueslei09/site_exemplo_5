@@ -1,11 +1,24 @@
+/* src/shared/assets/main.css */
+
+:root {
+  /* Paleta de Cores baseada na logo Mover Sistemas */
+  --mover-primary-blue: #0b2545;   /* Azul escuro/petróleo do texto M_VER e SISTEMAS */
+  --mover-accent-green: #61b329;   /* Verde vibrante da letra 'V' e da seta */
+  --mover-light-green: #8bc34a;    /* Verde claro do arco superior */
+  --mover-silver-gray: #a6b9c7;    /* Cinza metálico dos arcos */
+  --mover-dark-bg: #050b14;        /* Fundo escuro corporativo */
+  --mover-light-bg: #f8f9fa;       /* Fundo claro para componentes */
+}
+
 /* 1. Use a more-intuitive box-sizing model */
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
 /* 2. Remove default margin */
-* {
+*, *::before, *::after {
   margin: 0;
+  padding: 0;
 }
 
 /* 3. Allow percentage-based heights in the application */
@@ -13,13 +26,19 @@ html, body {
   height: 100%;
 }
 
-/* Typographic tweaks!
-  4. Add accessible line-height
-  5. Improve text rendering
-*/
+/* Tipografia global e suavização */
 body {
+  font-family: 'Poppins', sans-serif !important;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  background-color: var(--mover-dark-bg);
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+/* Garante que títulos e elementos de formulário herdem a mesma fonte */
+h1, h2, h3, h4, h5, h6, button, input, textarea, select {
+  font-family: 'Poppins', sans-serif !important;
 }
 
 /* 6. Improve media defaults */
@@ -41,4 +60,13 @@ p, h1, h2, h3, h4, h5, h6 {
 /* 9. Create a root stacking context */
 #root, #__next {
   isolation: isolate;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul, ol {
+  list-style: none;
 }

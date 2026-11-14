@@ -1,7 +1,7 @@
 
 
 <template>
-  <div id="app" class="min-vh-100 bg-black text-white">
+  <div id="app" class="min-vh-100 bg-white text-white">
     <!-- Navbar Global fixa no topo -->
     <GlobalNavbar />
 

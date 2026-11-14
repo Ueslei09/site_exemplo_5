@@ -1,13 +1,13 @@
 <!-- src/shared/components/GlobalNavbar.vue -->
 <template>
-  <header class="global-navbar-container fixed-top w-100">
-    <nav class="navbar navbar-expand-lg px-3 px-md-4 py-3 align-items-center">
+  <header class="global-navbar-container fixed-top w-100" :class="{ 'navbar-scrolled': isScrolled }">
+    <nav class="navbar navbar-expand-lg px-4 px-xl-5 py-3 align-items-center justify-content-between position-relative">
       
-      <!-- Esquerda (Desktop): Contact Us -->
+      <!-- Esquerda (Desktop): Contact Us (Abre o drawer sem mudar de rota) -->
       <div class="navbar-left d-none d-lg-flex align-items-center">
-        <router-link :to="navbarData.contactUrl" class="contact-link text-white text-uppercase text-decoration-none d-flex align-items-center gap-1" @click="toggleMenu('contact')">
+        <button class="contact-btn text-white text-uppercase bg-transparent border-0 d-flex align-items-center gap-1 p-0" @click="toggleMenu('contact')">
           <span class="plus-icon">+</span> {{ navbarData.contactText }}
-        </router-link>
+        </button>
       </div>
 
       <!-- Logo Mobile (Visível apenas em telas menores) -->
@@ -30,13 +30,26 @@
         </router-link>
       </div>
 
-      <!-- Direita: Search & Hambúrguer Menu -->
+      <!-- Direita: Ícones de Sacola, Conta, Pesquisa e Menu Hambúrguer -->
       <div class="navbar-right ms-auto d-flex align-items-center gap-3 gap-md-4">
-        <button class="icon-btn text-white bg-transparent border-0 d-flex align-items-center" aria-label="Search">
+        
+        <!-- Ícone da Sacola/Carrinho -->
+        <router-link to="/cart" class="icon-btn text-white text-decoration-none d-flex align-items-center" aria-label="Cart">
+          <i class="bi bi-bag fs-5"></i>
+        </router-link>
+
+        <!-- Ícone de Conta / Utilizador (Abre o Drawer de Conta com os links do service) -->
+        <button class="icon-btn text-white bg-transparent border-0 d-flex align-items-center p-0" @click="toggleMenu('account')" aria-label="Account">
+          <i class="bi bi-person fs-5"></i>
+        </button>
+
+        <!-- Ícone de Pesquisa -->
+        <button class="icon-btn text-white bg-transparent border-0 d-flex align-items-center p-0" aria-label="Search">
           <i class="bi bi-search fs-5"></i>
         </button>
         
-        <button class="menu-btn text-white bg-transparent border-0 d-flex align-items-center gap-2 text-uppercase" @click="toggleMenu('menu')" aria-label="Menu">
+        <!-- Botão Menu Hambúrguer -->
+        <button class="menu-btn text-white bg-transparent border-0 d-flex align-items-center gap-2 text-uppercase p-0" @click="toggleMenu('menu')" aria-label="Menu">
           <i class="bi bi-list fs-3"></i>
           <span class="d-none d-md-inline menu-text">Menu</span>
         </button>
@@ -56,14 +69,14 @@
 
       <div class="drawer-body px-4 px-md-5 pb-5">
         
-        <!-- Opção de Contato visível no topo do menu mobile -->
+        <!-- Opção de Contato no topo do menu mobile -->
         <div class="mobile-contact-trigger d-block d-lg-none mb-4 pb-3 border-bottom">
-          <router-link :to="navbarData.contactUrl" class="text-dark fw-bold text-uppercase text-decoration-none d-flex align-items-center gap-2" @click="toggleMenu('contact')">
+          <button class="text-dark fw-bold text-uppercase bg-transparent border-0 text-start d-flex align-items-center gap-2 p-0 w-100" @click="toggleMenu('contact')">
             <span class="text-warning fs-5">+</span> {{ navbarData.contactText }}
-          </router-link>
+          </button>
         </div>
 
-        <!-- Conteúdo do Menu Principal -->
+        <!-- Conteúdo 1: Menu Principal de Navegação (Hambúrguer) -->
         <div v-if="activeTab === 'menu'" class="menu-links-wrapper">
           <ul class="list-unstyled d-flex flex-column gap-3">
             <li v-for="(link, index) in navbarData.menuLinks" :key="index">
@@ -74,7 +87,19 @@
           </ul>
         </div>
 
-        <!-- Conteúdo da aba Contact -->
+        <!-- Conteúdo 2: Menu de Conta / Utilizador (Renderiza ícone e nome vindos do service) -->
+        <div v-else-if="activeTab === 'account'" class="account-links-wrapper">
+          <ul class="list-unstyled d-flex flex-column gap-3">
+            <li v-for="(link, index) in navbarData.accountLinks" :key="index">
+              <router-link :to="link.url" class="drawer-link text-dark text-decoration-none d-flex align-items-center gap-3" @click="closeMenu">
+                <i :class="['bi', link.icon, 'fs-5 text-secondary']"></i>
+                <span>{{ link.name }}</span>
+              </router-link>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Conteúdo 3: Aba Contact -->
         <div v-else class="contact-drawer-content">
           <h3 class="fw-bold text-uppercase mb-3" style="letter-spacing: 1px;">{{ navbarData.contactInfo.title }}</h3>
           <p class="text-muted mb-4">{{ navbarData.contactInfo.subtitle }}</p>
@@ -91,21 +116,44 @@
 <script setup>
 import { useNavbar } from '../composable/useNavbar'
 
-const { navbarData, isMenuOpen, activeTab, toggleMenu, closeMenu } = useNavbar()
+const { navbarData, isMenuOpen, activeTab, isScrolled, toggleMenu, closeMenu } = useNavbar()
 </script>
 
 <style scoped>
 .global-navbar-container {
   z-index: 1050;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
-  transition: background 0.3s ease;
+  background: transparent; /* 100% transparente quando no topo */
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.contact-link, .menu-text {
+/* Fundo sólido e com efeito blur assim que o utilizador faz scroll */
+.global-navbar-container.navbar-scrolled {
+  background: rgba(11, 37, 69, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-left {
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.navbar-right {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.contact-btn, .menu-text {
   font-size: 0.8rem;
   letter-spacing: 1.5px;
   font-weight: 500;
-  font-family: 'Sua-Fonte-Aqui', sans-serif;
+  color: #ffffff;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.contact-btn:hover {
+  opacity: 0.75;
 }
 
 .plus-icon {
@@ -164,25 +212,17 @@ const { navbarData, isMenuOpen, activeTab, toggleMenu, closeMenu } = useNavbar()
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
-/* Altera a tipografia e o estilo do link de contato dentro do card */
+
 .contact-drawer-content a {
-  font-family: 'Sua-Fonte-Aqui', sans-serif !important; /* Coloque o nome da sua fonte aqui */
-  font-size: 1rem; /* Ajuste o tamanho se necessário */
-  font-weight: 600; /* Peso da fonte (ex: 400, 600, 700) */
+  font-size: 1rem;
+  font-weight: 600;
   text-decoration: underline;
   color: #000000;
 }
 
-/* Altera a fonte do título "CONTACT US" */
 .contact-drawer-content h3 {
-  font-family: 'Sua-Fonte-Aqui', sans-serif !important; 
   font-weight: 700;
   letter-spacing: 1px;
-}
-
-/* Altera a fonte do subtítulo "Do you need further assistance?" */
-.contact-drawer-content p {
-  font-family: 'Sua-Fonte-Aqui', sans-serif !important; 
 }
 
 .menu-backdrop.show {
