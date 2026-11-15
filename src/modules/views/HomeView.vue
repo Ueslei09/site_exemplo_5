@@ -7,6 +7,7 @@
   <FashionBanner1/>
   <FashionSectionSapatosCarteira/>
   <FashionCards/>
+  <FashionNewsletter/>
 
 
  </main>
@@ -20,6 +21,7 @@ import FashionSectionBolsas from '../components/FashionSectionBolsas.vue'
 import FashionBanner1 from '../components/FashionBanner1.vue'
 import FashionSectionSapatosCarteira from '../components/FashionSectionSapatosCarteira.vue';
 import FashionCards from '../components/FashionCards.vue'
+import FashionNewsletter from '../components/FashionNewsletter.vue'
 </script>
 
 <style scoped>

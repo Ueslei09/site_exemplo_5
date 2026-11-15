@@ -1,16 +1,18 @@
 <!-- src/modules/fashion/components/FashionHero.vue -->
 <template>
   <section 
+    ref="elementRef"
     class="fashion-hero container-fluid p-0 position-relative overflow-hidden d-flex align-items-end justify-content-center"
     role="region"
     aria-label="Destaque da Coleção Fashion"
   >
-    <!-- Mídia de Fundo (Imagem ou Vídeo) -->
-    <div class="hero-media-container position-absolute top-0 start-0 w-100 h-100">
+    <!-- Mídia de Fundo com Paralaxe aplicado -->
+    <div class="hero-media-container position-absolute top-0 start-0 w-100 h-100 overflow-hidden">
       <video 
         v-if="heroData.mediaType === 'video'"
         :src="heroData.videoUrl"
-        class="w-100 h-100 object-fit-cover"
+        class="w-100 h-115 object-fit-cover parallax-img"
+        :style="{ transform: `translateY(${offsetY}px) scale(1.05)` }"
         autoplay
         muted
         loop
@@ -21,14 +23,18 @@
         v-else
         :src="heroData.mediaUrl"
         alt="Modelo elegante vestindo peças exclusivas da nova coleção em um ambiente sofisticado com decoração natalina."
-        class="w-100 h-100 object-fit-cover"
+        class="w-100 h-115 object-fit-cover parallax-img"
+        :style="{ transform: `translateY(${offsetY}px) scale(1.05)` }"
       />
       <!-- Overlay escuro para garantir contraste e legibilidade do texto -->
       <div class="hero-overlay position-absolute top-0 start-0 w-100 h-100"></div>
     </div>
 
-    <!-- Conteúdo Centralizado (Título e Botões na parte inferior) -->
-    <div class="hero-content-wrapper container text-center position-relative z-2 pb-5 mb-4">
+    <!-- Conteúdo Centralizado com animação fade-in-up controlada por isVisible -->
+    <div 
+      class="hero-content-wrapper container text-center position-relative z-2 pb-5 mb-4"
+      :class="{ 'fade-in-up': isVisible }"
+    >
       <h2 class="hero-subtitle text-white fw-light tracking-wide mb-4">
         {{ heroData.subtitle }}
       </h2>
@@ -50,14 +56,17 @@
 
 <script setup>
 import { useFashionHero } from '../composable/useFashionHero';
+import { useParallax } from '@/shared/composable/useParallax';
 
 const { heroData } = useFashionHero();
+// Ativa o gancho de paralaxe (velocidade 0.08 para um efeito suave e refinado)
+const { elementRef, isVisible, offsetY } = useParallax(0.08);
 </script>
 
 <style scoped>
 .fashion-hero {
   width: 100%;
-  height: 100vh; /* 100% da altura da tela igual ao exemplo */
+  height: 100vh; /* 100% da altura da tela */
   min-height: 600px;
 }
 
@@ -65,9 +74,29 @@ const { heroData } = useFashionHero();
   z-index: 1;
 }
 
+/* Imagem e Vídeo ligeiramente maiores para permitir o movimento de paralaxe sem margens brancas */
+.parallax-img {
+  height: 115% !important;
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+  object-position: center center;
+}
+
 .hero-overlay {
   background: rgba(0, 0, 0, 0.25); /* Degradê suave para destaque dos textos */
   pointer-events: none;
+}
+
+/* Animação de revelação suave inicial (fade-in-up) */
+.hero-content-wrapper {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-content-wrapper.fade-in-up {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .hero-subtitle {

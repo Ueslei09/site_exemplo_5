@@ -12,7 +12,7 @@ export const fashionBagsService = {
           videoUrl: "",
           alt: "Bolsa de luxo repousando sobre lençóis de seda acolchoados em tom champagne",
           linkText: "Bolsas para mulheres",
-          linkUrl: "/women/bags"
+          linkUrl: "/bolsas-femininas"
         },
         {
           id: 2,

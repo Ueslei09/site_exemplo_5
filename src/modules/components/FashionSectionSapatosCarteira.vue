@@ -10,7 +10,7 @@
           :key="card.id" 
           class="col-12 col-md-6 mb-4 mb-md-0"
         >
-          <div 
+        <div 
             class="bag-card position-relative d-flex flex-column h-100 bg-white shadow-sm overflow-hidden"
             :class="{ 'fade-in-up': isVisible }"
           >

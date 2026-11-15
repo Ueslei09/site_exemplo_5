@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../modules/views/HomeView.vue'
+import BolsasMulheresView from '../modules/Bolsa-mulheres/view/BolsasMulheresView.vue'
 
 
 const router = createRouter({
@@ -12,6 +13,16 @@ const router = createRouter({
       meta: {
         title: 'Mover Fashion | Página Inicial'
       },
+      
+
+    },
+    {
+      path: '/bolsas-femininas',
+      name: 'BolsasMulheres',
+      component: BolsasMulheresView,
+      meta: {
+        title: 'Mover Fashion | Bolsas Femininas'
+      }
     }
   ],
 })

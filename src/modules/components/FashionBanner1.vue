@@ -1,15 +1,16 @@
 <!-- src/modules/home/components/FashionBanner1.vue -->
 <template>
-  <section class="fashion-banner-section position-relative w-100 overflow-hidden" v-if="bannerData" aria-labelledby="banner-heading">
+  <section ref="elementRef" class="fashion-banner-section position-relative w-100 overflow-hidden" v-if="bannerData" aria-labelledby="banner-heading">
     <div class="container-fluid px-0">
       <div class="banner-wrapper position-relative w-100 d-flex align-items-end justify-content-center pb-5">
         
-        <!-- Fundo de Mídia Dinâmico (Vídeo ou Imagem) -->
+        <!-- Fundo de Mídia Dinâmico com Paralaxe Aplicado -->
         <div class="media-container position-absolute top-0 start-0 w-100 h-100 overflow-hidden">
           <video 
             v-if="bannerData.mediaType === 'video'"
             :src="bannerData.videoUrl"
-            class="w-100 h-100 object-fit-cover"
+            class="w-100 h-115 object-fit-cover parallax-img"
+            :style="{ transform: `translateY(${offsetY}px) scale(1.05)` }"
             autoplay
             muted
             loop
@@ -20,15 +21,19 @@
             v-else
             :src="bannerData.mediaUrl" 
             :alt="bannerData.alt" 
-            class="w-100 h-100 object-fit-cover banner-img"
+            class="w-100 h-115 object-fit-cover parallax-img"
+            :style="{ transform: `translateY(${offsetY}px) scale(1.05)` }"
             loading="lazy"
           />
           <!-- Overlay escuro suave para garantir legibilidade perfeita do texto -->
           <div class="banner-overlay position-absolute top-0 start-0 w-100 h-100"></div>
         </div>
 
-        <!-- Conteúdo Centralizado na Base (Título acima do Botão) -->
-        <div class="banner-content position-relative z-2 text-center text-white px-3 pb-4">
+        <!-- Conteúdo Centralizado com animação fade-in-up controlada por isVisible -->
+        <div 
+          class="banner-content position-relative z-2 text-center text-white px-3 pb-4"
+          :class="{ 'fade-in-up': isVisible }"
+        >
           <h2 id="banner-heading" class="banner-title text-uppercase fw-normal mb-3">
             {{ bannerData.title }}
           </h2>
@@ -48,13 +53,17 @@
 
 <script setup>
 import { useFashionBanner1 } from '../composable/useFashionBanner1'
+import { useParallax } from '@/shared/composable/useParallax'
 
 const { bannerData } = useFashionBanner1()
+// Ativa o paralaxe com velocidade suave de 0.08
+const { elementRef, isVisible, offsetY } = useParallax(0.08)
 </script>
 
 <style scoped>
 .fashion-banner-section {
   background-color: #0b2545;
+  overflow: hidden;
 }
 
 .banner-wrapper {
@@ -62,8 +71,24 @@ const { bannerData } = useFashionBanner1()
   min-height: 500px;
 }
 
-.banner-img {
+/* Imagem e Vídeo ligeiramente maiores para permitir o movimento de paralaxe sem margens */
+.parallax-img {
+  height: 115% !important;
+  will-change: transform;
+  transition: transform 0.1s ease-out;
   object-position: center center;
+}
+
+/* Animação inicial de revelação suave (fade-in-up) */
+.banner-content {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.banner-content.fade-in-up {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Overlay escuro subtil na parte inferior para contraste */
