@@ -5,7 +5,7 @@
       
       <!-- Esquerda (Desktop): Contact Us (Abre o drawer sem mudar de rota) -->
       <div class="navbar-left d-none d-lg-flex align-items-center">
-        <button class="contact-btn text-white text-uppercase bg-transparent border-0 d-flex align-items-center gap-1 p-0" @click="toggleMenu('contact')">
+        <button class="contact-btn text-uppercase bg-transparent border-0 d-flex align-items-center gap-1 p-0" @click="toggleMenu('contact')">
           <span class="plus-icon">+</span> {{ navbarData.contactText }}
         </button>
       </div>
@@ -14,7 +14,7 @@
       <div class="d-flex d-lg-none">
         <router-link to="/" class="navbar-brand-wrapper text-decoration-none">
           <img v-if="navbarData.showLogoImage" :src="navbarData.logoImage" :alt="navbarData.logoAlt" class="nav-logo-img img-fluid" />
-          <span v-else class="navbar-brand text-white fw-bold tracking-widest text-uppercase m-0 fs-4">
+          <span v-else class="navbar-brand fw-bold tracking-widest text-uppercase m-0 fs-4">
             {{ navbarData.brandName }}
           </span>
         </router-link>
@@ -24,7 +24,7 @@
       <div class="navbar-center position-absolute start-50 translate-middle-x d-none d-lg-flex">
         <router-link to="/" class="navbar-brand-wrapper text-decoration-none">
           <img v-if="navbarData.showLogoImage" :src="navbarData.logoImage" :alt="navbarData.logoAlt" class="nav-logo-img img-fluid" />
-          <span v-else class="navbar-brand text-white fw-bold tracking-widest text-uppercase m-0">
+          <span v-else class="navbar-brand fw-bold tracking-widest text-uppercase m-0">
             {{ navbarData.brandName }}
           </span>
         </router-link>
@@ -34,22 +34,22 @@
       <div class="navbar-right ms-auto d-flex align-items-center gap-3 gap-md-4">
         
         <!-- Ícone da Sacola/Carrinho -->
-        <router-link to="/cart" class="icon-btn text-white text-decoration-none d-flex align-items-center" aria-label="Cart">
+        <router-link to="/cart" class="icon-btn text-decoration-none d-flex align-items-center" aria-label="Cart">
           <i class="bi bi-bag fs-5"></i>
         </router-link>
 
         <!-- Ícone de Conta / Utilizador (Abre o Drawer de Conta com os links do service) -->
-        <button class="icon-btn text-white bg-transparent border-0 d-flex align-items-center p-0" @click="toggleMenu('account')" aria-label="Account">
+        <button class="icon-btn bg-transparent border-0 d-flex align-items-center p-0" @click="toggleMenu('account')" aria-label="Account">
           <i class="bi bi-person fs-5"></i>
         </button>
 
         <!-- Ícone de Pesquisa -->
-        <button class="icon-btn text-white bg-transparent border-0 d-flex align-items-center p-0" aria-label="Search">
+        <button class="icon-btn bg-transparent border-0 d-flex align-items-center p-0" aria-label="Search">
           <i class="bi bi-search fs-5"></i>
         </button>
         
         <!-- Botão Menu Hambúrguer -->
-        <button class="menu-btn text-white bg-transparent border-0 d-flex align-items-center gap-2 text-uppercase p-0" @click="toggleMenu('menu')" aria-label="Menu">
+        <button class="menu-btn bg-transparent border-0 d-flex align-items-center gap-2 text-uppercase p-0" @click="toggleMenu('menu')" aria-label="Menu">
           <i class="bi bi-list fs-3"></i>
           <span class="d-none d-md-inline menu-text">Menu</span>
         </button>
@@ -122,15 +122,24 @@ const { navbarData, isMenuOpen, activeTab, isScrolled, toggleMenu, closeMenu } =
 <style scoped>
 .global-navbar-container {
   z-index: 1050;
-  background: transparent; /* 100% transparente quando no topo */
+  background: transparent; /* Transparente quando no topo */
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Fundo sólido e com efeito blur assim que o utilizador faz scroll */
+/* Fundo branco e letras pretas assim que o utilizador faz scroll */
 .global-navbar-container.navbar-scrolled {
-  background: rgba(11, 37, 69, 0.95);
+  background: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Transforma todos os textos e ícones em preto no estado scrolled */
+.global-navbar-container.navbar-scrolled .contact-btn,
+.global-navbar-container.navbar-scrolled .menu-text,
+.global-navbar-container.navbar-scrolled .navbar-brand,
+.global-navbar-container.navbar-scrolled .icon-btn,
+.global-navbar-container.navbar-scrolled .menu-btn {
+  color: #000000 !important;
 }
 
 .navbar-left {
@@ -147,9 +156,9 @@ const { navbarData, isMenuOpen, activeTab, isScrolled, toggleMenu, closeMenu } =
   font-size: 0.8rem;
   letter-spacing: 1.5px;
   font-weight: 500;
-  color: #ffffff;
+  color: #ffffff; /* Branco no topo */
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: color 0.3s ease, opacity 0.2s;
 }
 
 .contact-btn:hover {
@@ -165,6 +174,8 @@ const { navbarData, isMenuOpen, activeTab, isScrolled, toggleMenu, closeMenu } =
   font-family: Georgia, serif;
   font-size: 1.4rem;
   letter-spacing: 3px;
+  color: #ffffff; /* Branco no topo */
+  transition: color 0.3s ease;
 }
 
 .nav-logo-img {
@@ -174,8 +185,9 @@ const { navbarData, isMenuOpen, activeTab, isScrolled, toggleMenu, closeMenu } =
 
 .icon-btn, .menu-btn {
   cursor: pointer;
+  color: #ffffff; /* Branco no topo */
   opacity: 0.9;
-  transition: opacity 0.2s;
+  transition: color 0.3s ease, opacity 0.2s;
 }
 
 .icon-btn:hover, .menu-btn:hover {

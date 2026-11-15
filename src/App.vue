@@ -7,11 +7,17 @@
 
     <!-- Visualização das Páginas via Router -->
     <router-view />
+
+    <!-- Botão Flutuante Global do WhatsApp -->
+    <FashionWhatsApp />
+    <FashionCookieBanner />
   </div>
 </template>
 
 <script setup>
 import GlobalNavbar from './shared/components/GlobalNavbar.vue'
+import FashionWhatsApp from '@/shared/components/FashionWhatsApp.vue'
+import FashionCookieBanner from '@/shared/components/FashionCookieBanner.vue'
 </script>
 
 
